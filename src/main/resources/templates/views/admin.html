@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Campus Event Manager</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #ffffff;
+            --bg-subtle: #f8fafc;
+            --surface: rgba(255, 255, 255, 0.95);
+            --card-border: rgba(14, 165, 233, 0.16);
+            --primary: #0284c7;
+            --primary-hover: #0369a1;
+            --primary-light: #f0f9ff;
+            --accent: #38bdf8;
+            --text-primary: #0f172a;
+            --text-secondary: #334155;
+            --text-muted: #64748b;
+            --danger: #ef4444;
+            --danger-bg: rgba(239, 68, 68, 0.06);
+            --danger-border: rgba(239, 68, 68, 0.2);
+            --shadow-soft: 0 10px 30px -5px rgba(2, 132, 199, 0.07), 0 4px 10px -2px rgba(0, 0, 0, 0.02);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-main);
+            background-image: radial-gradient(at 0% 0%, #f0f9ff 0px, transparent 50%),
+                              radial-gradient(at 100% 100%, #e0f2fe 0px, transparent 40%);
+            min-height: 100vh;
+            color: var(--text-primary);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1140px;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Navbar */
+        .navbar {
+            background: var(--surface);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 14px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .brand-icon {
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-weight: 700;
+        }
+
+        .brand-title h2 {
+            font-size: 17px;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+        }
+
+        .brand-title p {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn-view-site {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: #f0f9ff;
+            border: 1px solid rgba(14, 165, 233, 0.3);
+            border-radius: 12px;
+            color: var(--primary);
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .btn-view-site:hover {
+            background: var(--primary);
+            color: #ffffff;
+        }
+
+        .btn-logout {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: var(--danger-bg);
+            border: 1px solid var(--danger-border);
+            border-radius: 12px;
+            color: var(--danger);
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .btn-logout:hover {
+            background: var(--danger);
+            color: #ffffff;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+        }
+
+        .stat-card {
+            background: var(--surface);
+            border: 1px solid var(--card-border);
+            border-radius: 18px;
+            padding: 20px;
+            box-shadow: var(--shadow-soft);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            background: #f0f9ff;
+            border: 1px solid rgba(14, 165, 233, 0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            color: var(--primary);
+        }
+
+        .stat-num {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+        }
+
+        /* Tabs and Sections */
+        .admin-section {
+            background: var(--surface);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            padding: 28px;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid rgba(14, 165, 233, 0.12);
+        }
+
+        .section-header h3 {
+            font-size: 19px;
+            font-weight: 800;
+            letter-spacing: -0.3px;
+        }
+
+        .btn-add {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 9px 18px;
+            background: var(--primary);
+            color: #ffffff;
+            border: none;
+            border-radius: 12px;
+            font-size: 13.5px;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
+        }
+
+        .btn-add:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        /* Item Grid */
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 16px;
+        }
+
+        .item-card {
+            background: #ffffff;
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .item-card:hover {
+            border-color: rgba(14, 165, 233, 0.35);
+            box-shadow: 0 8px 20px rgba(2, 132, 199, 0.08);
+        }
+
+        .item-tag {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 3px 8px;
+            border-radius: 9999px;
+            background: #f0f9ff;
+            color: var(--primary);
+            display: inline-block;
+        }
+
+        .item-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 6px 0;
+        }
+
+        .item-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.45;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+            padding-top: 10px;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        .btn-edit {
+            flex: 1;
+            padding: 7px;
+            background: #f0f9ff;
+            border: 1px solid rgba(14, 165, 233, 0.3);
+            border-radius: 8px;
+            color: var(--primary);
+            font-size: 12.5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-edit:hover {
+            background: var(--primary);
+            color: #ffffff;
+        }
+
+        .btn-del {
+            padding: 7px 12px;
+            background: var(--danger-bg);
+            border: 1px solid var(--danger-border);
+            border-radius: 8px;
+            color: var(--danger);
+            font-size: 12.5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-del:hover {
+            background: var(--danger);
+            color: #ffffff;
+        }
+
+        /* Modal Forms */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(6px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-box {
+            background: #ffffff;
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 28px;
+            width: 100%;
+            max-width: 520px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        .modal-box h4 {
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 16px;
+        }
+
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(14, 165, 233, 0.2);
+            background: #f8fafc;
+            color: var(--text-primary);
+            font-size: 13.5px;
+            font-family: inherit;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn-cancel {
+            padding: 9px 16px;
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Top Nav -->
+        <nav class="navbar">
+            <div class="nav-brand">
+                <div class="brand-icon">AD</div>
+                <div class="brand-title">
+                    <h2>Admin Portal</h2>
+                    <p>Logged in as: eventadmin@gmail.com</p>
+                </div>
+            </div>
+
+            <div class="nav-actions">
+                <a href="/" class="btn-view-site" id="admin-view-site">
+                    <span>👁 View Student Portal</span>
+                </a>
+                <a href="/logout" class="btn-logout" id="admin-logout">
+                    <span>Log Out</span>
+                </a>
+            </div>
+        </nav>
+
+        <!-- Stats Overview -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">🎡</div>
+                <div>
+                    <div class="stat-num" th:text="${totalSlides}">3</div>
+                    <div class="stat-label">Active Carousel Slides</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📅</div>
+                <div>
+                    <div class="stat-num" th:text="${totalEvents}">6</div>
+                    <div class="stat-label">Programs & Events</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">👤</div>
+                <div>
+                    <div class="stat-num">Admin</div>
+                    <div class="stat-label">Full Control Granted</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 1: Carousel Slides Management -->
+        <div class="admin-section">
+            <div class="section-header">
+                <div>
+                    <h3>Carousel Slides Manager</h3>
+                    <p style="font-size: 13px; color: var(--text-muted); margin-top: 3px;">
+                        Add, edit, or remove slides shown on the student home page
+                    </p>
+                </div>
+                <button type="button" class="btn-add" onclick="openCreateSlideModal()">
+                    + Add New Slide
+                </button>
+            </div>
+
+            <div class="items-grid">
+                <div th:each="slide : ${slides}" class="item-card">
+                    <div>
+                        <span class="item-tag" th:text="${slide.tag}">Tag</span>
+                        <h4 class="item-title" th:text="${slide.title}">Slide Title</h4>
+                        <p class="item-desc" th:text="${slide.description}">Slide description</p>
+                        <div style="font-size: 12px; color: var(--text-muted); margin-top: 6px;">
+                            <span th:text="'Theme: ' + ${slide.colorTheme}">Theme</span> • 
+                            <span th:text="'Order: ' + ${slide.displayOrder}">Order</span>
+                        </div>
+                    </div>
+
+                    <div class="item-actions">
+                        <button type="button" class="btn-edit" 
+                                th:attr="data-id=${slide.id},
+                                         data-tag=${slide.tag},
+                                         data-title=${slide.title},
+                                         data-desc=${slide.description},
+                                         data-badge=${slide.badgeText},
+                                         data-theme=${slide.colorTheme},
+                                         data-order=${slide.displayOrder}"
+                                onclick="openEditSlideModal(this)">
+                            Edit
+                        </button>
+                        <form th:action="@{'/admin/carousel/delete/' + ${slide.id}}" method="post" style="display:inline;" onsubmit="return confirm('Delete this slide?');">
+                            <button type="submit" class="btn-del">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 2: Events / Cards Management -->
+        <div class="admin-section">
+            <div class="section-header">
+                <div>
+                    <h3>Event Cards & Programs Manager</h3>
+                    <p style="font-size: 13px; color: var(--text-muted); margin-top: 3px;">
+                        Create, modify, and manage categorised event cards
+                    </p>
+                </div>
+                <button type="button" class="btn-add" onclick="openCreateEventModal()">
+                    + Create New Event
+                </button>
+            </div>
+
+            <div class="items-grid">
+                <div th:each="ev : ${events}" class="item-card">
+                    <div>
+                        <span class="item-tag" th:text="${ev.category}">Category</span>
+                        <h4 class="item-title" th:text="${ev.title}">Event Title</h4>
+                        <p class="item-desc" th:text="${ev.shortDescription}">Short description</p>
+                        <div style="font-size: 12px; color: var(--text-muted); margin-top: 6px;">
+                            <span th:text="'📅 ' + ${ev.eventDate}">Date</span> • 
+                            <span th:text="'📍 ' + ${ev.venue}">Venue</span>
+                        </div>
+                    </div>
+
+                    <div class="item-actions">
+                        <button type="button" class="btn-edit" 
+                                th:attr="data-id=${ev.id},
+                                         data-title=${ev.title},
+                                         data-category=${ev.category},
+                                         data-short=${ev.shortDescription},
+                                         data-full=${ev.fullDescription},
+                                         data-date=${ev.eventDate},
+                                         data-time=${ev.eventTime},
+                                         data-venue=${ev.venue},
+                                         data-organizer=${ev.organizer},
+                                         data-badge=${ev.badge}"
+                                onclick="openEditEventModal(this)">
+                            Edit
+                        </button>
+                        <form th:action="@{'/admin/events/delete/' + ${ev.id}}" method="post" style="display:inline;" onsubmit="return confirm('Delete this event?');">
+                            <button type="submit" class="btn-del">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 1: Create Slide -->
+    <div class="modal-overlay" id="modal-create-slide">
+        <div class="modal-box">
+            <h4>Add New Carousel Slide</h4>
+            <form action="/admin/carousel/create" method="post">
+                <div class="form-group">
+                    <label>Tag / Category</label>
+                    <input type="text" name="tag" placeholder="e.g. ★ Featured Spotlight" required>
+                </div>
+                <div class="form-group">
+                    <label>Headline Title</label>
+                    <input type="text" name="title" placeholder="e.g. Campus Robotics Showcase 2026" required>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea name="description" rows="3" placeholder="Brief summary of the highlight" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Badge Pill Text</label>
+                    <input type="text" name="badgeText" placeholder="e.g. Free Entry • Level 4 Lab">
+                </div>
+                <div class="form-group">
+                    <label>Color Theme</label>
+                    <select name="colorTheme">
+                        <option value="sky">Sky Blue (Soft Light)</option>
+                        <option value="blue">Deep Ocean Blue</option>
+                        <option value="cyan">Bright Cyan</option>
+                        <option value="indigo">Royal Indigo</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Display Order</label>
+                    <input type="number" name="displayOrder" value="1" min="1">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-cancel" onclick="closeModals()">Cancel</button>
+                    <button type="submit" class="btn-add">Save Slide</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal 2: Edit Slide -->
+    <div class="modal-overlay" id="modal-edit-slide">
+        <div class="modal-box">
+            <h4>Edit Carousel Slide</h4>
+            <form action="/admin/carousel/edit" method="post">
+                <input type="hidden" name="id" id="edit-slide-id">
+                <div class="form-group">
+                    <label>Tag / Category</label>
+                    <input type="text" name="tag" id="edit-slide-tag" required>
+                </div>
+                <div class="form-group">
+                    <label>Headline Title</label>
+                    <input type="text" name="title" id="edit-slide-title" required>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea name="description" id="edit-slide-desc" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Badge Pill Text</label>
+                    <input type="text" name="badgeText" id="edit-slide-badge">
+                </div>
+                <div class="form-group">
+                    <label>Color Theme</label>
+                    <select name="colorTheme" id="edit-slide-theme">
+                        <option value="sky">Sky Blue (Soft Light)</option>
+                        <option value="blue">Deep Ocean Blue</option>
+                        <option value="cyan">Bright Cyan</option>
+                        <option value="indigo">Royal Indigo</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Display Order</label>
+                    <input type="number" name="displayOrder" id="edit-slide-order" min="1">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-cancel" onclick="closeModals()">Cancel</button>
+                    <button type="submit" class="btn-add">Update Slide</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal 3: Create Event -->
+    <div class="modal-overlay" id="modal-create-event">
+        <div class="modal-box">
+            <h4>Create New Event Card</h4>
+            <form action="/admin/events/create" method="post">
+                <div class="form-group">
+                    <label>Event Title</label>
+                    <input type="text" name="title" placeholder="e.g. AI Hackathon 2026" required>
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <input type="text" name="category" placeholder="e.g. Technology, Workshops, Cultural, Sports" required>
+                </div>
+                <div class="form-group">
+                    <label>Short Overview (Card Display)</label>
+                    <textarea name="shortDescription" rows="2" placeholder="Short 2-line summary" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Full Program Details (Modal Display)</label>
+                    <textarea name="fullDescription" rows="4" placeholder="Comprehensive program agenda and details" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Date & Time</label>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <input type="text" name="eventDate" placeholder="e.g. Nov 15, 2026" required>
+                        <input type="text" name="eventTime" placeholder="e.g. 10:00 AM - 3:00 PM" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Venue</label>
+                    <input type="text" name="venue" placeholder="e.g. Main Auditorium Hall A" required>
+                </div>
+                <div class="form-group">
+                    <label>Organizer Club / Council</label>
+                    <input type="text" name="organizer" placeholder="e.g. Robotics Society">
+                </div>
+                <div class="form-group">
+                    <label>Badge Pill</label>
+                    <input type="text" name="badge" placeholder="e.g. Cash Prize: $5,000">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-cancel" onclick="closeModals()">Cancel</button>
+                    <button type="submit" class="btn-add">Create Event</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal 4: Edit Event -->
+    <div class="modal-overlay" id="modal-edit-event">
+        <div class="modal-box">
+            <h4>Edit Event Card</h4>
+            <form action="/admin/events/edit" method="post">
+                <input type="hidden" name="id" id="edit-event-id">
+                <div class="form-group">
+                    <label>Event Title</label>
+                    <input type="text" name="title" id="edit-event-title" required>
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <input type="text" name="category" id="edit-event-category" required>
+                </div>
+                <div class="form-group">
+                    <label>Short Overview</label>
+                    <textarea name="shortDescription" id="edit-event-short" rows="2" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Full Program Details</label>
+                    <textarea name="fullDescription" id="edit-event-full" rows="4" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Date & Time</label>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <input type="text" name="eventDate" id="edit-event-date" required>
+                        <input type="text" name="eventTime" id="edit-event-time" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Venue</label>
+                    <input type="text" name="venue" id="edit-event-venue" required>
+                </div>
+                <div class="form-group">
+                    <label>Organizer Club / Council</label>
+                    <input type="text" name="organizer" id="edit-event-organizer">
+                </div>
+                <div class="form-group">
+                    <label>Badge Pill</label>
+                    <input type="text" name="badge" id="edit-event-badge">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-cancel" onclick="closeModals()">Cancel</button>
+                    <button type="submit" class="btn-add">Update Event</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function closeModals() {
+            document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
+        }
+
+        function openCreateSlideModal() {
+            closeModals();
+            document.getElementById('modal-create-slide').classList.add('active');
+        }
+
+        function openEditSlideModal(btn) {
+            closeModals();
+            document.getElementById('edit-slide-id').value = btn.getAttribute('data-id');
+            document.getElementById('edit-slide-tag').value = btn.getAttribute('data-tag');
+            document.getElementById('edit-slide-title').value = btn.getAttribute('data-title');
+            document.getElementById('edit-slide-desc').value = btn.getAttribute('data-desc');
+            document.getElementById('edit-slide-badge').value = btn.getAttribute('data-badge') || '';
+            document.getElementById('edit-slide-theme').value = btn.getAttribute('data-theme') || 'sky';
+            document.getElementById('edit-slide-order').value = btn.getAttribute('data-order') || 1;
+            document.getElementById('modal-edit-slide').classList.add('active');
+        }
+
+        function openCreateEventModal() {
+            closeModals();
+            document.getElementById('modal-create-event').classList.add('active');
+        }
+
+        function openEditEventModal(btn) {
+            closeModals();
+            document.getElementById('edit-event-id').value = btn.getAttribute('data-id');
+            document.getElementById('edit-event-title').value = btn.getAttribute('data-title');
+            document.getElementById('edit-event-category').value = btn.getAttribute('data-category');
+            document.getElementById('edit-event-short').value = btn.getAttribute('data-short');
+            document.getElementById('edit-event-full').value = btn.getAttribute('data-full');
+            document.getElementById('edit-event-date').value = btn.getAttribute('data-date');
+            document.getElementById('edit-event-time').value = btn.getAttribute('data-time');
+            document.getElementById('edit-event-venue').value = btn.getAttribute('data-venue');
+            document.getElementById('edit-event-organizer').value = btn.getAttribute('data-organizer') || '';
+            document.getElementById('edit-event-badge').value = btn.getAttribute('data-badge') || '';
+            document.getElementById('modal-edit-event').classList.add('active');
+        }
+    </script>
+</body>
+</html>
