@@ -1,7 +1,11 @@
 package com.example.basicweb.entity;
 
 import jakarta.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 @Entity
 @Table(name = "event_cards")
@@ -43,6 +47,9 @@ public class EventCard {
 
     @Column(name = "color_accent")
     private String colorAccent = "sky";
+
+    @Column(name = "max_capacity")
+    private Integer maxCapacity = 0; // 0 or null = Unlimited
 
     public EventCard() {
     }
@@ -118,11 +125,68 @@ public class EventCard {
     }
 
     public LocalDateTime getEventDateTime() {
-        return eventDateTime;
+        if (this.eventDateTime != null) {
+            return this.eventDateTime;
+        }
+        this.eventDateTime = parseDateTimeFromStrings(this.eventDate, this.eventTime);
+        return this.eventDateTime;
     }
 
     public void setEventDateTime(LocalDateTime eventDateTime) {
         this.eventDateTime = eventDateTime;
+    }
+
+    public static LocalDateTime parseDateTimeFromStrings(String dateStr, String timeStr) {
+        LocalDate date = null;
+        if (dateStr != null && !dateStr.isBlank()) {
+            String rawDate = dateStr.trim();
+            try {
+                date = LocalDate.parse(rawDate, DateTimeFormatter.ISO_LOCAL_DATE);
+            } catch (Exception ignored) {
+                try {
+                    date = LocalDate.parse(rawDate, DateTimeFormatter.ofPattern("MMM dd, yyyy", Locale.ENGLISH));
+                } catch (Exception ignored2) {
+                    try {
+                        date = LocalDate.parse(rawDate, DateTimeFormatter.ofPattern("MMMM dd, yyyy", Locale.ENGLISH));
+                    } catch (Exception ignored3) {
+                        try {
+                            date = LocalDate.parse(rawDate, DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+                        } catch (Exception ignored4) {
+                            try {
+                                date = LocalDate.parse(rawDate, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+                            } catch (Exception ignored5) {}
+                        }
+                    }
+                }
+            }
+        }
+        if (date == null) {
+            date = LocalDate.now().plusDays(7);
+        }
+
+        LocalTime time = null;
+        if (timeStr != null && !timeStr.isBlank()) {
+            String rawTime = timeStr.trim();
+            if (rawTime.contains("-")) {
+                rawTime = rawTime.split("-")[0].trim();
+            }
+            try {
+                time = LocalTime.parse(rawTime, DateTimeFormatter.ofPattern("HH:mm"));
+            } catch (Exception ignored) {
+                try {
+                    time = LocalTime.parse(rawTime, DateTimeFormatter.ofPattern("h:mm a", Locale.ENGLISH));
+                } catch (Exception ignored2) {
+                    try {
+                        time = LocalTime.parse(rawTime, DateTimeFormatter.ofPattern("hh:mm a", Locale.ENGLISH));
+                    } catch (Exception ignored3) {}
+                }
+            }
+        }
+        if (time == null) {
+            time = LocalTime.of(10, 0);
+        }
+
+        return LocalDateTime.of(date, time);
     }
 
     public String getVenue() {
@@ -155,5 +219,61 @@ public class EventCard {
 
     public void setColorAccent(String colorAccent) {
         this.colorAccent = colorAccent;
+    }
+
+    public String getIsoDate() {
+        LocalDateTime dt = getEventDateTime();
+        return (dt != null) ? dt.toLocalDate().toString() : "";
+    }
+
+    public String getIsoStartTime() {
+        LocalDateTime dt = getEventDateTime();
+        return (dt != null) ? dt.toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")) : "10:00";
+    }
+
+    public String getIsoEndTime() {
+        if (eventTime != null && eventTime.contains("-")) {
+            String[] parts = eventTime.split("-");
+            if (parts.length > 1) {
+                String endPart = parts[1].trim();
+                try {
+                    DateTimeFormatter f = DateTimeFormatter.ofPattern("h:mm a", Locale.ENGLISH);
+                    LocalTime t = LocalTime.parse(endPart, f);
+                    return t.format(DateTimeFormatter.ofPattern("HH:mm"));
+                } catch (Exception ignored) {
+                    try {
+                        DateTimeFormatter f = DateTimeFormatter.ofPattern("hh:mm a", Locale.ENGLISH);
+                        LocalTime t = LocalTime.parse(endPart, f);
+                        return t.format(DateTimeFormatter.ofPattern("HH:mm"));
+                    } catch (Exception ignored2) {
+                        try {
+                            LocalTime t = LocalTime.parse(endPart, DateTimeFormatter.ofPattern("HH:mm"));
+                            return t.format(DateTimeFormatter.ofPattern("HH:mm"));
+                        } catch (Exception ignored3) {}
+                    }
+                }
+            }
+        }
+        LocalDateTime dt = getEventDateTime();
+        return (dt != null) ? dt.plusHours(2).toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")) : "";
+    }
+
+    public Integer getMaxCapacity() {
+        return maxCapacity != null ? maxCapacity : 0;
+    }
+
+    public void setMaxCapacity(Integer maxCapacity) {
+        this.maxCapacity = (maxCapacity != null) ? maxCapacity : 0;
+    }
+
+    public boolean isFull(long currentRegistrations) {
+        return maxCapacity != null && maxCapacity > 0 && currentRegistrations >= maxCapacity;
+    }
+
+    public int getRemainingSeats(long currentRegistrations) {
+        if (maxCapacity == null || maxCapacity <= 0) {
+            return -1; // unlimited
+        }
+        return Math.max(0, (int) (maxCapacity - currentRegistrations));
     }
 }

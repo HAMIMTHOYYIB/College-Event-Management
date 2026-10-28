@@ -305,6 +305,8 @@
             justify-content: space-between;
             align-items: center;
             box-shadow: var(--shadow-soft);
+            position: relative;
+            z-index: 500;
         }
 
         .nav-brand {
@@ -402,6 +404,7 @@
             overflow: hidden;
             box-shadow: var(--shadow-soft);
             position: relative;
+            z-index: 1;
         }
 
         .carousel-viewport { position: relative; width: 100%; height: 340px; overflow: hidden; }
@@ -942,11 +945,762 @@
         }
         .modal-btn-unregister:hover { background: var(--danger); color: #fff; transform: translateY(-1px); }
 
+        /* ===== NOTIFICATION CENTER ===== */
+        .notification-wrapper {
+            position: relative;
+            z-index: 510;
+        }
+
+        .btn-notification {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: #f0f9ff;
+            border: 1px solid rgba(14, 165, 233, 0.25);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s ease;
+        }
+
+        .btn-notification:hover {
+            background: var(--primary);
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+
+        .notif-badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: var(--danger);
+            color: #ffffff;
+            font-size: 10px;
+            font-weight: 800;
+            padding: 2px 6px;
+            border-radius: 9999px;
+            box-shadow: 0 2px 6px rgba(239, 68, 68, 0.4);
+            animation: pulseBadge 2s infinite;
+        }
+
+        @keyframes pulseBadge {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+
+        .notification-dropdown {
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            width: 360px;
+            max-width: 90vw;
+            background: #ffffff;
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.2);
+            z-index: 9999;
+            display: none;
+            overflow: hidden;
+            animation: notifFade 0.2s ease-out;
+        }
+
+        .notification-dropdown.active {
+            display: block;
+        }
+
+        @keyframes notifFade {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .notif-dropdown-header {
+            padding: 16px 18px;
+            border-bottom: 1px solid rgba(14, 165, 233, 0.12);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f8fafc;
+        }
+
+        .notif-dropdown-header h4 {
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+
+        .notif-dropdown-header p {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .btn-clear-notifs {
+            background: none;
+            border: none;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--primary);
+            cursor: pointer;
+        }
+
+        .notif-dropdown-list {
+            max-height: 340px;
+            overflow-y: auto;
+            padding: 8px 0;
+        }
+
+        .notif-item {
+            padding: 12px 18px;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            transition: background 0.15s;
+        }
+
+        .notif-item:hover {
+            background: #f0f9ff;
+        }
+
+        .notif-item-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: #e0f2fe;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            flex-shrink: 0;
+        }
+
+        .notif-item-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 3px;
+        }
+
+        .notif-item-desc {
+            font-size: 11.5px;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        .notif-item-time {
+            font-size: 10.5px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .notif-empty {
+            padding: 30px 20px;
+            text-align: center;
+            color: var(--text-muted);
+        }
+
+        /* ===== STANDOUT NEXT EVENT LIVE COUNTDOWN HERO ===== */
+        .next-event-hero {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(240, 249, 255, 0.95));
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(2, 132, 199, 0.25);
+            border-radius: 24px;
+            padding: 24px 28px;
+            box-shadow: 0 15px 35px -5px rgba(2, 132, 199, 0.12), 0 5px 15px rgba(0, 0, 0, 0.03);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 24px;
+            flex-wrap: wrap;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .next-event-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #0284c7, #38bdf8, #10b981);
+        }
+
+        .next-event-left {
+            flex: 1;
+            min-width: 280px;
+        }
+
+        .next-event-badge-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .next-event-pill {
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 4px 10px;
+            border-radius: 9999px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: #ffffff;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            box-shadow: 0 2px 8px rgba(2, 132, 199, 0.3);
+        }
+
+        .next-event-cat {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 9999px;
+            background: #f0fdf4;
+            color: var(--success);
+            border: 1px solid var(--success-border);
+        }
+
+        .next-event-title {
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.4px;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+        }
+
+        .next-event-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .next-event-meta span {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .next-event-right {
+            background: #ffffff;
+            border: 1px solid rgba(14, 165, 233, 0.2);
+            border-radius: 18px;
+            padding: 18px 24px;
+            box-shadow: var(--shadow-soft);
+            text-align: center;
+            min-width: 290px;
+        }
+
+        .timer-headline {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            color: var(--primary);
+            margin-bottom: 12px;
+        }
+
+        .clock-display {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .clock-unit {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 52px;
+            background: #f8fafc;
+            border: 1px solid rgba(14, 165, 233, 0.15);
+            border-radius: 12px;
+            padding: 8px 6px;
+        }
+
+        .clock-num {
+            font-size: 26px;
+            font-weight: 900;
+            color: var(--text-primary);
+            font-variant-numeric: tabular-nums;
+            line-height: 1;
+        }
+
+        .clock-label {
+            font-size: 9px;
+            font-weight: 700;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+            margin-top: 4px;
+        }
+
+        .clock-sep {
+            font-size: 20px;
+            font-weight: 900;
+            color: var(--primary);
+            margin-bottom: 14px;
+        }
+
+        .clock-status-msg {
+            font-size: 13px;
+            font-weight: 700;
+            color: #059669;
+            margin-top: 8px;
+        }
+
+        /* ===== SEARCH BAR ===== */
+        .search-box-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            width: 340px;
+            max-width: 100%;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px 38px 10px 40px;
+            border-radius: 9999px;
+            border: 1px solid rgba(14, 165, 233, 0.25);
+            background: var(--surface);
+            backdrop-filter: blur(8px);
+            font-size: 13.5px;
+            font-family: inherit;
+            color: var(--text-primary);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+            transition: all 0.2s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 14px;
+            font-size: 14px;
+            color: var(--text-muted);
+            pointer-events: none;
+        }
+
+        .search-clear-btn {
+            position: absolute;
+            right: 12px;
+            background: none;
+            border: none;
+            font-size: 14px;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 2px 6px;
+            border-radius: 50%;
+            display: none;
+            transition: color 0.15s ease;
+        }
+        .search-clear-btn:hover { color: var(--danger); }
+
+        /* ===== CAPACITY & SOLD OUT BADGES ===== */
+        .card-soldout-badge {
+            font-size: 10px;
+            font-weight: 800;
+            color: #dc2626;
+            background: #fef2f2;
+            padding: 3px 8px;
+            border-radius: 6px;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .capacity-meta-row {
+            font-size: 12px;
+        }
+
+        .modal-soldout-banner {
+            background: #fef2f2;
+            border: 1px solid var(--danger-border);
+            border-radius: 12px;
+            padding: 12px 16px;
+            color: #991b1b;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .disabled-btn {
+            opacity: 0.6;
+            cursor: not-allowed !important;
+            filter: grayscale(1);
+        }
+
+        /* ===== CALENDAR ACTION BUTTONS ===== */
+        .calendar-actions-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .btn-calendar-action {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 14px;
+            background: #f8fafc;
+            border: 1px solid rgba(14, 165, 233, 0.25);
+            border-radius: 12px;
+            font-size: 12.5px;
+            font-weight: 700;
+            color: var(--primary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            font-family: inherit;
+        }
+
+        .btn-calendar-action:hover {
+            background: #f0f9ff;
+            border-color: var(--primary);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(2, 132, 199, 0.12);
+        }
+
+        /* ===== QR CODE ATTENDANCE TICKET ===== */
+        .qr-ticket-box {
+            background: linear-gradient(135deg, #f0fdf4, #ecfdf5);
+            border: 1.5px dashed rgba(16, 185, 129, 0.4);
+            border-radius: 16px;
+            padding: 18px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .qr-ticket-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed rgba(16, 185, 129, 0.3);
+        }
+
+        .qr-ticket-badge {
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--success);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .qr-ticket-id {
+            font-size: 11px;
+            font-weight: 700;
+            font-family: monospace;
+            color: #065f46;
+            background: rgba(16, 185, 129, 0.15);
+            padding: 3px 8px;
+            border-radius: 6px;
+        }
+
+        .qr-ticket-body {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .qr-code-svg-wrap {
+            width: 100px;
+            height: 100px;
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 6px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .qr-code-svg-wrap svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .qr-ticket-meta {
+            flex: 1;
+        }
+
+        .qr-student-name {
+            font-size: 15px;
+            font-weight: 800;
+            color: var(--text-primary);
+            line-height: 1.3;
+        }
+
+        .qr-student-college {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        .qr-ticket-inst {
+            font-size: 11px;
+            color: #059669;
+            margin-top: 8px;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        /* ===== PROFILE MODAL ===== */
+        .profile-form-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-top: 16px;
+        }
+
+        .profile-form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .profile-form-group label {
+            font-size: 11.5px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+        }
+
+        .profile-form-group input {
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: 1px solid rgba(14, 165, 233, 0.25);
+            background: #f8fafc;
+            color: var(--text-primary);
+            font-size: 13.5px;
+            font-family: inherit;
+        }
+
+        .profile-form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+        }
+
+        .profile-form-group input:disabled {
+            background: #e2e8f0;
+            color: #64748b;
+            cursor: not-allowed;
+        }
+
+        .profile-helper {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .password-input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        .password-input-wrapper input {
+            width: 100%;
+            padding-right: 42px !important;
+            box-sizing: border-box;
+        }
+
+        .password-toggle-btn {
+            position: absolute;
+            right: 10px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 15px;
+            color: #64748b;
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            transition: color 0.15s ease, background 0.15s ease;
+        }
+
+        .password-toggle-btn:hover {
+            color: var(--primary);
+            background: rgba(14, 165, 233, 0.1);
+        }
+
+        .password-section-card {
+            background: linear-gradient(135deg, rgba(240, 249, 255, 0.7), rgba(248, 250, 252, 0.9));
+            border: 1px solid rgba(14, 165, 233, 0.2);
+            border-radius: 14px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 6px;
+        }
+
+        .password-section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .password-section-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13.5px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .password-match-badge {
+            font-size: 11px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .password-match-badge.matched {
+            display: inline-block;
+            color: #10b981;
+        }
+
+        .password-match-badge.mismatched {
+            display: inline-block;
+            color: #ef4444;
+        }
+
+        @media (max-width: 768px) {
+            .brand-title {
+                display: none !important;
+            }
+            .navbar {
+                padding: 10px 14px;
+            }
+            .nav-actions {
+                gap: 8px;
+            }
+            /* Phone View: Show only the profile avatar/button and hide the student name & edit icon */
+            .user-chip {
+                padding: 0 !important;
+                background: transparent !important;
+                border: none !important;
+                border-radius: 50% !important;
+                box-shadow: none !important;
+                cursor: pointer;
+            }
+            .user-chip .user-name-text,
+            .user-chip .user-edit-icon {
+                display: none !important;
+            }
+            .user-avatar {
+                width: 38px !important;
+                height: 38px !important;
+                font-size: 14px !important;
+                font-weight: 700 !important;
+                border-radius: 50% !important;
+                box-shadow: 0 2px 8px rgba(2, 132, 199, 0.25) !important;
+                border: 2px solid #ffffff !important;
+                transition: transform 0.15s ease, box-shadow 0.15s ease;
+            }
+            .user-chip:hover .user-avatar,
+            .user-chip:active .user-avatar {
+                transform: scale(1.06);
+                box-shadow: 0 3px 12px rgba(2, 132, 199, 0.4) !important;
+            }
+
+            /* Phone View: Show only the logout icon button and hide the 'Log Out' text */
+            .btn-logout {
+                padding: 0 !important;
+                width: 38px !important;
+                height: 38px !important;
+                border-radius: 12px !important;
+                display: inline-flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+            }
+            .btn-logout .logout-text {
+                display: none !important;
+            }
+            .btn-logout svg {
+                width: 17px !important;
+                height: 17px !important;
+            }
+
+            /* Phone View: Admin Manager compact icon button */
+            .btn-admin {
+                padding: 0 !important;
+                width: 38px !important;
+                height: 38px !important;
+                border-radius: 12px !important;
+                display: inline-flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                font-size: 16px !important;
+            }
+            .btn-admin .admin-text {
+                display: none !important;
+            }
+
+            /* Phone View: Notification bell button uniform size */
+            .btn-notification {
+                width: 38px !important;
+                height: 38px !important;
+            }
+        }
+
         @media (max-width: 640px) {
+            .brand-title {
+                display: none !important;
+            }
+            .navbar {
+                padding: 10px 14px;
+            }
+            .nav-actions {
+                gap: 8px;
+            }
+            .notification-dropdown {
+                position: fixed;
+                top: 72px;
+                left: 12px;
+                right: 12px;
+                width: auto;
+                max-width: calc(100vw - 24px);
+            }
             .carousel-slide { padding: 30px 24px; }
             .slide-title { font-size: 22px; }
             .modal-info-box { grid-template-columns: 1fr; }
             .reg-event-card { width: 250px; }
+            .section-header { flex-direction: column; align-items: flex-start; gap: 12px; }
+            .search-box-wrapper { width: 100%; }
+            .calendar-actions-row { grid-template-columns: 1fr; }
+            .qr-ticket-body { flex-direction: column; align-items: flex-start; }
+            .next-event-hero { padding: 18px 16px; }
+            .next-event-right { width: 100%; min-width: 0; }
         }
     </style>
 </head>
@@ -986,22 +1740,63 @@
             </a>
 
             <div class="nav-actions">
-                <a th:if="${isAdmin}" href="/admin" class="btn-admin" id="nav-admin-link">
-                    <span>⚙ Admin Manager</span>
+                <a th:if="${isAdmin}" href="/admin" class="btn-admin" id="nav-admin-link" title="Admin Manager">
+                    <span class="admin-icon">⚙</span>
+                    <span class="admin-text">Admin Manager</span>
                 </a>
 
-                <div class="user-chip">
+                <div class="user-chip" onclick="openProfileModal()" style="cursor: pointer;" title="Click to view & edit your profile" role="button" aria-label="Student Profile">
                     <div class="user-avatar" th:text="${#strings.substring(name, 0, 1)}">U</div>
-                    <span th:text="${name}">Student</span>
+                    <span class="user-name-text" th:text="${name}">Student</span>
+                    <span class="user-edit-icon" style="font-size: 11px; color: var(--primary); margin-left: 2px;">✏</span>
                 </div>
 
-                <button type="button" class="btn-logout" id="logout-button" onclick="confirmLogout()">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <!-- Notification Bell Button & Dropdown (Positioned on the Right Side) -->
+                <div class="notification-wrapper" id="notification-wrapper">
+                    <button type="button" class="btn-notification" id="notification-bell-btn" onclick="toggleNotifications()" aria-label="View notifications">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                        </svg>
+                        <span class="notif-badge" id="notif-badge" 
+                              th:if="${userRegistrations != null and not #lists.isEmpty(userRegistrations)}" 
+                              th:text="${#lists.size(userRegistrations)}">1</span>
+                    </button>
+
+                    <!-- Notification Dropdown Panel -->
+                    <div class="notification-dropdown" id="notification-dropdown">
+                        <div class="notif-dropdown-header">
+                            <div>
+                                <h4>Notifications &amp; Schedule Alerts</h4>
+                                <p>Live updates on your registered programs</p>
+                            </div>
+                            <button type="button" class="btn-clear-notifs" onclick="dismissAllNotifications()">Clear</button>
+                        </div>
+                        <div class="notif-dropdown-list" id="notif-dropdown-list">
+                            <div th:each="reg : ${userRegistrations}" class="notif-item">
+                                <div class="notif-item-icon">🎟</div>
+                                <div class="notif-item-content">
+                                    <div class="notif-item-title" th:text="'Registered: ' + ${reg.event.title}">Registered for Event</div>
+                                    <div class="notif-item-desc" th:text="'Scheduled on ' + ${reg.event.eventDate} + ' at ' + ${reg.event.eventTime} + ' (' + ${reg.event.venue} + ')'">Scheduled Date & Time</div>
+                                    <div class="notif-item-time" th:text="${#temporals.format(reg.registeredAt, 'MMM dd, yyyy • hh:mm a')}">Just now</div>
+                                </div>
+                            </div>
+                            <div th:if="${userRegistrations == null or #lists.isEmpty(userRegistrations)}" class="notif-empty" id="notif-empty-msg">
+                                <div style="font-size: 24px; margin-bottom: 6px;">🔔</div>
+                                <p style="font-weight: 600; font-size: 13px;">No notifications yet</p>
+                                <p style="font-size: 11.5px; color: var(--text-muted); margin-top: 2px;">Register for campus programs to receive date, time, and countdown schedule alerts.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="button" class="btn-logout" id="logout-button" onclick="confirmLogout()" aria-label="Log Out" title="Log Out">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
                         <polyline points="16 17 21 12 16 7"></polyline>
                         <line x1="21" y1="12" x2="9" y2="12"></line>
                     </svg>
-                    <span>Log Out</span>
+                    <span class="logout-text">Log Out</span>
                 </button>
             </div>
         </nav>
@@ -1033,6 +1828,75 @@
             </div>
         </div>
 
+        <!-- Standout Next Registered Event Live Countdown Hero -->
+        <div class="next-event-hero" id="next-event-hero" th:if="${nextRegisteredEvent != null}"
+             th:attr="data-next-datetime=${nextRegisteredEvent.eventDateTime != null ? nextRegisteredEvent.eventDateTime.toString() : ''},
+                      data-date=${nextRegisteredEvent.eventDate},
+                      data-time=${nextRegisteredEvent.eventTime}">
+            <div class="next-event-left">
+                <div class="next-event-badge-row">
+                    <span class="next-event-pill" th:text="${isRegisteredHero ? '⏱ Next Registered Event' : '⏱ Next Campus Program'}">⏱ Next Registered Event</span>
+                    <span class="next-event-cat" th:text="${nextRegisteredEvent.category}">Technology</span>
+                </div>
+                <h3 class="next-event-title" th:text="${nextRegisteredEvent.title}">Event Title</h3>
+                <div class="next-event-meta">
+                    <span>📅 <strong th:text="${nextRegisteredEvent.eventDate}">Nov 15, 2026</strong></span>
+                    <span>⏰ <strong th:text="${nextRegisteredEvent.eventTime}">10:00 AM - 3:30 PM</strong></span>
+                    <span>📍 <strong th:text="${nextRegisteredEvent.venue}">Campus Venue</strong></span>
+                    <button type="button" class="btn-hero-details" 
+                            th:attr="data-id=${nextRegisteredEvent.id},
+                                     data-title=${nextRegisteredEvent.title},
+                                     data-category=${nextRegisteredEvent.category},
+                                     data-short=${nextRegisteredEvent.shortDescription},
+                                     data-full=${nextRegisteredEvent.fullDescription},
+                                     data-date=${nextRegisteredEvent.eventDate},
+                                     data-time=${nextRegisteredEvent.eventTime},
+                                     data-datetime=${nextRegisteredEvent.eventDateTime != null ? nextRegisteredEvent.eventDateTime.toString() : ''},
+                                     data-venue=${nextRegisteredEvent.venue},
+                                     data-organizer=${nextRegisteredEvent.organizer},
+                                     data-badge=${nextRegisteredEvent.badge},
+                                     data-capacity=${nextRegisteredEvent.maxCapacity},
+                                     data-remaining=${nextRegisteredEvent.getRemainingSeats(registrationCounts.get(nextRegisteredEvent.id))},
+                                     data-isfull=${nextRegisteredEvent.isFull(registrationCounts.get(nextRegisteredEvent.id))},
+                                     data-registered=${registeredEventIds.contains(nextRegisteredEvent.id)},
+                                     data-regcount=${registrationCounts.get(nextRegisteredEvent.id)}"
+                            onclick="openEventDetails(this)"
+                            style="padding: 6px 14px; background: #ffffff; border: 1px solid rgba(14, 165, 233, 0.35); border-radius: 10px; color: var(--primary); font-size: 12px; font-weight: 700; cursor: pointer; transition: all 0.2s;">
+                        View Details &amp; Pass →
+                    </button>
+                </div>
+            </div>
+
+            <div class="next-event-right">
+                <div class="timer-headline">
+                    <span class="countdown-live-dot"></span>
+                    <span>TIME REMAINING UNTIL EVENT</span>
+                </div>
+                <div class="clock-display" id="main-countdown-clock">
+                    <div class="clock-unit">
+                        <span class="clock-num" id="clock-days">00</span>
+                        <span class="clock-label">DAYS</span>
+                    </div>
+                    <div class="clock-sep">:</div>
+                    <div class="clock-unit">
+                        <span class="clock-num" id="clock-hours">00</span>
+                        <span class="clock-label">HOURS</span>
+                    </div>
+                    <div class="clock-sep">:</div>
+                    <div class="clock-unit">
+                        <span class="clock-num" id="clock-mins">00</span>
+                        <span class="clock-label">MINUTES</span>
+                    </div>
+                    <div class="clock-sep">:</div>
+                    <div class="clock-unit">
+                        <span class="clock-num" id="clock-secs">00</span>
+                        <span class="clock-label">SECONDS</span>
+                    </div>
+                </div>
+                <div class="clock-status-msg" id="clock-status-text" style="display:none;"></div>
+            </div>
+        </div>
+
         <!-- My Registered Events & Countdown Timers -->
         <div class="registered-section" id="registered-section" th:if="${userRegistrations != null and not #lists.isEmpty(userRegistrations)}">
             <div class="registered-header">
@@ -1045,7 +1909,25 @@
 
             <div class="registered-events-scroll" id="registered-events-scroll">
                 <div th:each="reg : ${userRegistrations}" class="reg-event-card" 
-                     th:attr="data-event-datetime=${reg.event.eventDateTime}">
+                     th:attr="data-id=${reg.event.id},
+                              data-title=${reg.event.title},
+                              data-category=${reg.event.category},
+                              data-short=${reg.event.shortDescription},
+                              data-full=${reg.event.fullDescription},
+                              data-date=${reg.event.eventDate},
+                              data-time=${reg.event.eventTime},
+                              data-datetime=${reg.event.eventDateTime != null ? reg.event.eventDateTime.toString() : ''},
+                              data-venue=${reg.event.venue},
+                              data-organizer=${reg.event.organizer},
+                              data-badge=${reg.event.badge},
+                              data-capacity=${reg.event.maxCapacity},
+                              data-remaining=${reg.event.getRemainingSeats(registrationCounts.get(reg.event.id))},
+                              data-isfull=${reg.event.isFull(registrationCounts.get(reg.event.id))},
+                              data-registered=true,
+                              data-regcount=${registrationCounts.get(reg.event.id)},
+                              data-event-datetime=${reg.event.eventDateTime != null ? reg.event.eventDateTime.toString() : ''}"
+                     onclick="openEventDetails(this)"
+                     style="cursor: pointer;">
                     <span class="reg-event-tag" th:text="${reg.event.category}">Technology</span>
                     <div class="reg-event-title" th:text="${reg.event.title}">Event Name</div>
                     <div class="reg-event-meta">
@@ -1064,11 +1946,18 @@
             </div>
         </div>
 
-        <!-- Section Title & Category Filter -->
+        <!-- Section Title & Event Search Bar -->
         <div class="section-header">
             <div class="section-title">
                 <h3>Campus Events &amp; Programs</h3>
                 <p>Browse upcoming workshops, hackathons, and cultural activities</p>
+            </div>
+            <div class="search-box-wrapper">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="event-search-input" class="search-input" 
+                       placeholder="Search by title, venue, or keyword..." 
+                       oninput="handleSearchInput(this.value)">
+                <button type="button" class="search-clear-btn" id="search-clear-btn" onclick="clearSearch()" aria-label="Clear search">✕</button>
             </div>
         </div>
 
@@ -1104,10 +1993,13 @@
                           data-full=${event.fullDescription},
                           data-date=${event.eventDate},
                           data-time=${event.eventTime},
-                          data-datetime=${event.eventDateTime},
+                          data-datetime=${event.eventDateTime != null ? event.eventDateTime.toString() : ''},
                           data-venue=${event.venue},
                           data-organizer=${event.organizer},
                           data-badge=${event.badge},
+                          data-capacity=${event.maxCapacity},
+                          data-remaining=${event.getRemainingSeats(registrationCounts.get(event.id))},
+                          data-isfull=${event.isFull(registrationCounts.get(event.id))},
                           data-registered=${registeredEventIds.contains(event.id)},
                           data-regcount=${registrationCounts.get(event.id)}"
                  onclick="openEventDetails(this)">
@@ -1115,8 +2007,11 @@
                 <div>
                     <div class="card-top">
                         <span class="card-category" th:text="${event.category}">Technology</span>
-                        <span th:if="${registeredEventIds.contains(event.id)}" class="card-registered-badge">✓ Registered</span>
-                        <span th:unless="${registeredEventIds.contains(event.id)}" class="card-badge" th:text="${event.badge}">Free</span>
+                        <div style="display: flex; gap: 6px; align-items: center;">
+                            <span th:if="${registeredEventIds.contains(event.id)}" class="card-registered-badge">✓ Registered</span>
+                            <span th:if="${!registeredEventIds.contains(event.id) and event.isFull(registrationCounts.get(event.id))}" class="card-soldout-badge">Sold Out</span>
+                            <span th:unless="${registeredEventIds.contains(event.id) or event.isFull(registrationCounts.get(event.id))}" class="card-badge" th:text="${event.badge}">Free</span>
+                        </div>
                     </div>
 
                     <h4 class="card-title" th:text="${event.title}">Event Title</h4>
@@ -1133,18 +2028,29 @@
                             <span>📍</span>
                             <span th:text="${event.venue}">Venue</span>
                         </div>
+                        <div class="meta-row capacity-meta-row" th:if="${event.maxCapacity > 0}">
+                            <span>👥</span>
+                            <span th:if="${event.isFull(registrationCounts.get(event.id))}" style="color: var(--danger); font-weight: 700;">
+                                Sold Out (0 / <span th:text="${event.maxCapacity}"></span> seats left)
+                            </span>
+                            <span th:unless="${event.isFull(registrationCounts.get(event.id))}" style="color: var(--text-secondary); font-weight: 600;">
+                                <strong th:text="${event.getRemainingSeats(registrationCounts.get(event.id))}"></strong> / 
+                                <span th:text="${event.maxCapacity}"></span> seats left
+                            </span>
+                        </div>
                     </div>
 
                     <div class="card-footer">
-                        <span>View Details</span>
+                        <span>View Details &amp; Pass</span>
                         <span>→</span>
                     </div>
                 </div>
             </div>
 
             <div class="empty-state" id="empty-state" style="display: none;">
-                <h4>No programs found</h4>
-                <p>There are no events listed under this category at the moment.</p>
+                <div style="font-size: 32px; margin-bottom: 8px;">🔍</div>
+                <h4 id="empty-state-title" style="font-size: 16px; font-weight: 800; color: var(--text-primary); margin-bottom: 4px;">No programs found</h4>
+                <p id="empty-state-desc" style="font-size: 13px; color: var(--text-muted);">There are no events listed under this category at the moment.</p>
             </div>
         </div>
     </div>
@@ -1176,9 +2082,51 @@
                 </div>
             </div>
 
-            <div class="modal-registration-count" id="modal-reg-count">
-                <span>👥</span>
-                <span id="modal-reg-count-text">0 students registered</span>
+            <div style="display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap;">
+                <div class="modal-registration-count" id="modal-reg-count" style="margin-bottom: 0; flex: 1;">
+                    <span>👥</span>
+                    <span id="modal-reg-count-text">0 students registered</span>
+                </div>
+                <div class="modal-registration-count" id="modal-capacity-info" style="margin-bottom: 0; background: #f0fdf4; border-color: var(--success-border); color: #065f46;">
+                    <span>🎟</span>
+                    <span id="modal-capacity-text">Unlimited Seats</span>
+                </div>
+            </div>
+
+            <!-- Sold Out Alert Banner -->
+            <div class="modal-soldout-banner" id="modal-soldout-alert" style="display: none;">
+                <span>⚠️</span>
+                <span>This event has reached maximum capacity (Sold Out). Registrations are closed.</span>
+            </div>
+
+            <!-- Official Attendee Ticket Pass with Dynamic QR Code -->
+            <div class="qr-ticket-box" id="modal-qr-ticket" style="display: none;">
+                <div class="qr-ticket-header">
+                    <div class="qr-ticket-badge">✓ OFFICIAL ATTENDEE PASS</div>
+                    <div class="qr-ticket-id" id="ticket-id-display">PASS #CP-000</div>
+                </div>
+                <div class="qr-ticket-body">
+                    <div class="qr-code-svg-wrap" id="modal-qr-code-svg">
+                        <!-- SVG injected here -->
+                    </div>
+                    <div class="qr-ticket-meta">
+                        <div class="qr-student-name" id="ticket-user-name" th:text="${user != null ? user.username : 'Student'}">Student Name</div>
+                        <div class="qr-student-college" id="ticket-college-name" th:text="${user != null ? user.collegeName : 'University'}">Stanford University</div>
+                        <div class="qr-ticket-inst">Show this verified QR code at the venue entry gate for fast-track attendance scanning.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Calendar Integration Buttons -->
+            <div class="calendar-actions-row" id="modal-calendar-row">
+                <button type="button" class="btn-calendar-action" onclick="addToGoogleCalendar()">
+                    <span>📅</span>
+                    <span>Add to Google Calendar</span>
+                </button>
+                <button type="button" class="btn-calendar-action" onclick="downloadIcsFile()">
+                    <span>📥</span>
+                    <span>Download .ICS File</span>
+                </button>
             </div>
 
             <div class="modal-desc-heading">Program Overview &amp; Details</div>
@@ -1190,6 +2138,97 @@
             <button class="modal-btn-unregister" id="modal-unregister-btn" onclick="handleUnregister()" style="display:none;">
                 ✗ Cancel Registration
             </button>
+        </div>
+    </div>
+
+    <!-- Student Profile & Settings Modal -->
+    <div class="modal-overlay" id="profile-modal" onclick="closeProfileOnOverlay(event)">
+        <div class="modal-card" style="max-width: 490px;">
+            <button class="modal-close" onclick="closeProfileModal()" aria-label="Close modal">✕</button>
+            
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                <div class="brand-icon" style="width: 44px; height: 44px; font-size: 20px;">👤</div>
+                <div>
+                    <h3 style="font-size: 19px; font-weight: 800; color: var(--text-primary); letter-spacing: -0.3px;">Student Profile &amp; Settings</h3>
+                    <p style="font-size: 12px; color: var(--text-muted);">Manage your account details and security password</p>
+                </div>
+            </div>
+
+            <!-- In-Modal Feedback Alert Box -->
+            <div id="profile-modal-alert" style="display:none; padding: 11px 14px; border-radius: 10px; font-size: 12.5px; margin-bottom: 12px; font-weight: 500; line-height: 1.4;"></div>
+
+            <form id="profile-form" onsubmit="submitProfileForm(event)">
+                <div class="profile-form-grid">
+                    <div class="profile-form-group">
+                        <label>Registered Email Address</label>
+                        <input type="email" id="profile-email" th:value="${user != null ? user.email : ''}" disabled title="Email cannot be changed">
+                        <span class="profile-helper">🔒 Email address is linked to your student credentials.</span>
+                    </div>
+
+                    <div class="profile-form-group">
+                        <label>Full Name <span style="color: var(--danger);">*</span></label>
+                        <input type="text" id="profile-username" name="username" th:value="${user != null ? user.username : ''}" required placeholder="Your full name">
+                    </div>
+
+                    <div class="profile-form-group">
+                        <label>College / University Name <span style="color: var(--danger);">*</span></label>
+                        <input type="text" id="profile-college" name="collegeName" th:value="${user != null ? user.collegeName : ''}" required placeholder="College name">
+                    </div>
+
+                    <div class="profile-form-group">
+                        <label>Mobile Number (Indian 10-Digit) <span style="color: var(--danger);">*</span></label>
+                        <input type="tel" id="profile-phone" name="phoneNumber" th:value="${user != null ? user.phoneNumber : ''}" 
+                               required pattern="[6-9][0-9]{9}" maxlength="10" placeholder="e.g. 9876543210" 
+                               title="10-digit Indian mobile number starting with 6-9, no +91">
+                        <span class="profile-helper">📱 Enter only the 10-digit mobile number (no +91 prefix).</span>
+                    </div>
+
+                    <!-- Security & Change Password Section -->
+                    <div class="password-section-card">
+                        <div class="password-section-header">
+                            <div class="password-section-title">
+                                <span>🔑</span>
+                                <span>Change Account Password</span>
+                            </div>
+                            <span style="font-size: 11px; color: var(--text-muted); font-weight: 600;">Optional</span>
+                        </div>
+                        <p style="font-size: 11.5px; color: var(--text-muted); margin: 0; line-height: 1.4;">
+                            Leave blank to keep your current password. To change your password, provide your current password and your new password.
+                        </p>
+
+                        <div class="profile-form-group">
+                            <label>Current Password</label>
+                            <div class="password-input-wrapper">
+                                <input type="password" id="profile-current-password" name="currentPassword" placeholder="Enter current password" autocomplete="current-password">
+                                <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('profile-current-password', this)" title="Show/Hide password">👁️</button>
+                            </div>
+                        </div>
+
+                        <div class="profile-form-group">
+                            <label>New Password (Min 6 Characters)</label>
+                            <div class="password-input-wrapper">
+                                <input type="password" id="profile-new-password" name="newPassword" minlength="6" placeholder="Enter new password (min 6 chars)" autocomplete="new-password" oninput="checkPasswordMatch()">
+                                <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('profile-new-password', this)" title="Show/Hide password">👁️</button>
+                            </div>
+                        </div>
+
+                        <div class="profile-form-group">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <label>Confirm New Password</label>
+                                <span id="password-match-badge" class="password-match-badge"></span>
+                            </div>
+                            <div class="password-input-wrapper">
+                                <input type="password" id="profile-confirm-password" name="confirmPassword" minlength="6" placeholder="Re-type new password" autocomplete="new-password" oninput="checkPasswordMatch()">
+                                <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('profile-confirm-password', this)" title="Show/Hide password">👁️</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="modal-btn-register" id="profile-save-btn" style="margin-top: 8px;">
+                        Save Profile Changes
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -1267,8 +2306,9 @@
         }
 
         function executeConfirm() {
+            const cb = confirmCallback;
             closeConfirm();
-            if (confirmCallback) confirmCallback();
+            if (cb) cb();
         }
 
         function confirmLogout() {
@@ -1315,18 +2355,56 @@
             startTimer();
         }
 
-        /* ===== CATEGORY FILTER ===== */
+        /* ===== COMBINED SEARCH & CATEGORY FILTER ===== */
+        let currentSelectedCategory = 'All Events';
+        let currentSearchQuery = '';
+
+        function handleSearchInput(query) {
+            currentSearchQuery = (query || '').trim().toLowerCase();
+            const clearBtn = document.getElementById('search-clear-btn');
+            if (clearBtn) clearBtn.style.display = currentSearchQuery ? 'block' : 'none';
+            applyFilters();
+        }
+
+        function clearSearch() {
+            const input = document.getElementById('event-search-input');
+            if (input) input.value = '';
+            currentSearchQuery = '';
+            const clearBtn = document.getElementById('search-clear-btn');
+            if (clearBtn) clearBtn.style.display = 'none';
+            applyFilters();
+        }
+
         function filterCategory(selectedCat, buttonEl) {
+            currentSelectedCategory = selectedCat || 'All Events';
             document.querySelectorAll('.cat-pill').forEach(btn => btn.classList.remove('active'));
             if (buttonEl) buttonEl.classList.add('active');
+            applyFilters();
+        }
 
+        function applyFilters() {
             const cards = document.querySelectorAll('.event-card');
             const emptyState = document.getElementById('empty-state');
+            const emptyTitle = document.getElementById('empty-state-title');
+            const emptyDesc = document.getElementById('empty-state-desc');
             let visibleCount = 0;
 
             cards.forEach(card => {
-                const cardCat = card.getAttribute('data-category');
-                if (selectedCat === 'All Events' || cardCat === selectedCat) {
+                const cardCat = card.getAttribute('data-category') || '';
+                const title = (card.getAttribute('data-title') || '').toLowerCase();
+                const shortDesc = (card.getAttribute('data-short') || '').toLowerCase();
+                const fullDesc = (card.getAttribute('data-full') || '').toLowerCase();
+                const venue = (card.getAttribute('data-venue') || '').toLowerCase();
+
+                const matchesCat = (currentSelectedCategory === 'All Events' || cardCat === currentSelectedCategory);
+                const matchesSearch = !currentSearchQuery || 
+                                      title.includes(currentSearchQuery) || 
+                                      shortDesc.includes(currentSearchQuery) || 
+                                      fullDesc.includes(currentSearchQuery) || 
+                                      venue.includes(currentSearchQuery) ||
+                                      cardCat.toLowerCase().includes(currentSearchQuery);
+
+                if (matchesCat && matchesSearch) {
                     card.style.display = 'flex';
                     visibleCount++;
                 } else {
@@ -1334,36 +2412,192 @@
                 }
             });
 
-            if (emptyState) emptyState.style.display = (visibleCount === 0) ? 'block' : 'none';
+            if (emptyState) {
+                if (visibleCount === 0) {
+                    emptyState.style.display = 'block';
+                    if (currentSearchQuery) {
+                        if (emptyTitle) emptyTitle.textContent = 'No matching programs found';
+                        if (emptyDesc) emptyDesc.textContent = `No events matched "${currentSearchQuery}" under "${currentSelectedCategory}". Try another search term.`;
+                    } else {
+                        if (emptyTitle) emptyTitle.textContent = 'No programs listed';
+                        if (emptyDesc) emptyDesc.textContent = `There are currently no events listed under "${currentSelectedCategory}".`;
+                    }
+                } else {
+                    emptyState.style.display = 'none';
+                }
+            }
+        }
+
+        /* ===== QR CODE SVG GENERATOR ===== */
+        function generateQRCodeSVG(text) {
+            const size = 21;
+            const grid = Array.from({ length: size }, () => Array(size).fill(0));
+            const reserved = Array.from({ length: size }, () => Array(size).fill(false));
+
+            function setFinder(r, c) {
+                for (let i = 0; i < 7; i++) {
+                    for (let j = 0; j < 7; j++) {
+                        const isBorder = (i === 0 || i === 6 || j === 0 || j === 6);
+                        const isCenter = (i >= 2 && i <= 4 && j >= 2 && j <= 4);
+                        grid[r + i][c + j] = (isBorder || isCenter) ? 1 : 0;
+                        reserved[r + i][c + j] = true;
+                    }
+                }
+            }
+
+            // 3 Standard QR Corner Finders
+            setFinder(0, 0);
+            setFinder(0, 14);
+            setFinder(14, 0);
+
+            // Reserved separator areas
+            for (let i = 0; i < 8; i++) {
+                if (i < size && 7 < size) { reserved[i][7] = true; reserved[7][i] = true; }
+                if (i < size && 13 < size) { reserved[i][13] = true; reserved[7][13] = true; }
+                if (13 < size && i < size) { reserved[13][i] = true; }
+            }
+
+            // Timing tracks
+            for (let i = 8; i < 13; i++) {
+                grid[6][i] = (i % 2 === 0) ? 1 : 0;
+                grid[i][6] = (i % 2 === 0) ? 1 : 0;
+                reserved[6][i] = true;
+                reserved[i][6] = true;
+            }
+
+            // Dark module
+            grid[13][8] = 1;
+            reserved[13][8] = true;
+
+            // Deterministic payload hash
+            let hash = 0;
+            for (let i = 0; i < text.length; i++) {
+                hash = ((hash << 5) - hash) + text.charCodeAt(i);
+                hash |= 0;
+            }
+
+            let bitIndex = 0;
+            for (let col = size - 1; col > 0; col -= 2) {
+                if (col === 6) col--;
+                for (let row = 0; row < size; row++) {
+                    for (let c = 0; c < 2; c++) {
+                        const actualCol = col - c;
+                        if (!reserved[row][actualCol]) {
+                            const bit = ((hash >> (bitIndex % 31)) ^ (row * 7 + actualCol * 13)) & 1;
+                            grid[row][actualCol] = bit;
+                            bitIndex++;
+                        }
+                    }
+                }
+            }
+
+            let rects = '';
+            const cellSize = 10;
+            for (let r = 0; r < size; r++) {
+                for (let c = 0; c < size; c++) {
+                    if (grid[r][c] === 1) {
+                        rects += `<rect x="${c * cellSize}" y="${r * cellSize}" width="${cellSize}" height="${cellSize}" fill="#0f172a"/>`;
+                    }
+                }
+            }
+
+            return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size * cellSize} ${size * cellSize}" width="100%" height="100%"><rect width="100%" height="100%" fill="#ffffff"/>${rects}</svg>`;
         }
 
         /* ===== EVENT DETAILS MODAL ===== */
         let currentModalEventId = null;
         let currentModalIsRegistered = false;
+        let currentModalData = {};
 
         function openEventDetails(cardEl) {
             currentModalEventId = parseInt(cardEl.getAttribute('data-id'));
             currentModalIsRegistered = cardEl.getAttribute('data-registered') === 'true';
             const regCount = parseInt(cardEl.getAttribute('data-regcount') || '0');
+            const maxCap = parseInt(cardEl.getAttribute('data-capacity') || '0');
+            const isFull = cardEl.getAttribute('data-isfull') === 'true';
+            const remaining = parseInt(cardEl.getAttribute('data-remaining') || '0');
 
-            document.getElementById('modal-title').textContent = cardEl.getAttribute('data-title') || '';
-            document.getElementById('modal-category').textContent = cardEl.getAttribute('data-category') || '';
-            document.getElementById('modal-date').textContent = cardEl.getAttribute('data-date') || '';
-            document.getElementById('modal-time').textContent = cardEl.getAttribute('data-time') || '';
-            document.getElementById('modal-venue').textContent = cardEl.getAttribute('data-venue') || '';
-            document.getElementById('modal-organizer').textContent = cardEl.getAttribute('data-organizer') || '';
-            document.getElementById('modal-desc').textContent = cardEl.getAttribute('data-full') || cardEl.getAttribute('data-short') || '';
+            currentModalData = {
+                id: currentModalEventId,
+                title: cardEl.getAttribute('data-title') || '',
+                category: cardEl.getAttribute('data-category') || '',
+                date: cardEl.getAttribute('data-date') || '',
+                time: cardEl.getAttribute('data-time') || '',
+                datetime: cardEl.getAttribute('data-datetime') || '',
+                venue: cardEl.getAttribute('data-venue') || '',
+                organizer: cardEl.getAttribute('data-organizer') || '',
+                short: cardEl.getAttribute('data-short') || '',
+                full: cardEl.getAttribute('data-full') || '',
+                regCount: regCount,
+                maxCapacity: maxCap,
+                isFull: isFull,
+                remaining: remaining,
+                registered: currentModalIsRegistered
+            };
+
+            document.getElementById('modal-title').textContent = currentModalData.title;
+            document.getElementById('modal-category').textContent = currentModalData.category;
+            document.getElementById('modal-date').textContent = currentModalData.date;
+            document.getElementById('modal-time').textContent = currentModalData.time;
+            document.getElementById('modal-venue').textContent = currentModalData.venue;
+            document.getElementById('modal-organizer').textContent = currentModalData.organizer;
+            document.getElementById('modal-desc').textContent = currentModalData.full || currentModalData.short;
             document.getElementById('modal-reg-count-text').textContent = regCount + ' student' + (regCount !== 1 ? 's' : '') + ' registered';
 
-            updateModalButtons(currentModalIsRegistered);
+            // Capacity counter & status
+            const capTextEl = document.getElementById('modal-capacity-text');
+            if (maxCap > 0) {
+                if (isFull) {
+                    capTextEl.textContent = `Capacity: Sold Out (${regCount}/${maxCap})`;
+                } else {
+                    capTextEl.textContent = `Capacity: ${remaining} of ${maxCap} seats left`;
+                }
+            } else {
+                capTextEl.textContent = 'Capacity: Unlimited Seats';
+            }
+
+            // QR Ticket Pass Display
+            const qrBox = document.getElementById('modal-qr-ticket');
+            if (currentModalIsRegistered) {
+                const ticketId = `CP-PASS-${currentModalEventId}-${/*[[${user != null ? user.id : 1}]]*/ 1}`;
+                document.getElementById('ticket-id-display').textContent = `#${ticketId}`;
+                document.getElementById('modal-qr-code-svg').innerHTML = generateQRCodeSVG(ticketId + ':' + currentModalData.title);
+                qrBox.style.display = 'block';
+            } else {
+                qrBox.style.display = 'none';
+            }
+
+            updateModalButtons(currentModalIsRegistered, isFull);
 
             document.getElementById('event-modal').classList.add('active');
             document.body.style.overflow = 'hidden';
         }
 
-        function updateModalButtons(isRegistered) {
-            document.getElementById('modal-register-btn').style.display = isRegistered ? 'none' : 'block';
-            document.getElementById('modal-unregister-btn').style.display = isRegistered ? 'block' : 'none';
+        function updateModalButtons(isRegistered, isFull) {
+            const regBtn = document.getElementById('modal-register-btn');
+            const unregBtn = document.getElementById('modal-unregister-btn');
+            const soldOutAlert = document.getElementById('modal-soldout-alert');
+
+            if (isRegistered) {
+                regBtn.style.display = 'none';
+                unregBtn.style.display = 'block';
+                if (soldOutAlert) soldOutAlert.style.display = 'none';
+            } else {
+                unregBtn.style.display = 'none';
+                regBtn.style.display = 'block';
+
+                if (isFull) {
+                    regBtn.disabled = true;
+                    regBtn.classList.add('disabled-btn');
+                    regBtn.textContent = 'Program Sold Out (Closed)';
+                    if (soldOutAlert) soldOutAlert.style.display = 'flex';
+                } else {
+                    regBtn.disabled = false;
+                    regBtn.classList.remove('disabled-btn');
+                    regBtn.textContent = 'Register For This Program';
+                    if (soldOutAlert) soldOutAlert.style.display = 'none';
+                }
+            }
         }
 
         function closeModal() {
@@ -1375,6 +2609,39 @@
             if (e.target.id === 'event-modal') closeModal();
         }
 
+        /* ===== CALENDAR INTEGRATION ===== */
+        function addToGoogleCalendar() {
+            if (!currentModalData) return;
+            const title = encodeURIComponent(currentModalData.title || 'Campus Event');
+            const details = encodeURIComponent((currentModalData.full || currentModalData.short || '') + '\n\nOrganized by: ' + (currentModalData.organizer || 'Campus'));
+            const location = encodeURIComponent(currentModalData.venue || 'Campus');
+
+            let startIso = '';
+            let endIso = '';
+            if (currentModalData.datetime) {
+                const d = new Date(currentModalData.datetime);
+                const pad = (n) => String(n).padStart(2, '0');
+                startIso = `${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}T${pad(d.getHours())}${pad(d.getMinutes())}00`;
+                const endD = new Date(d.getTime() + 2 * 60 * 60 * 1000);
+                endIso = `${endD.getFullYear()}${pad(endD.getMonth()+1)}${pad(endD.getDate())}${pad(endD.getHours())}${pad(endD.getMinutes())}00`;
+            } else {
+                const d = new Date();
+                d.setDate(d.getDate() + 1);
+                const pad = (n) => String(n).padStart(2, '0');
+                startIso = `${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}T100000`;
+                endIso = `${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}T120000`;
+            }
+
+            const gcalUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${startIso}/${endIso}&details=${details}&location=${location}`;
+            window.open(gcalUrl, '_blank');
+        }
+
+        function downloadIcsFile() {
+            if (!currentModalEventId) return;
+            window.location.href = `/events/${currentModalEventId}/calendar.ics`;
+        }
+
+        /* ===== REGISTRATION AJAX ACTIONS ===== */
         async function handleRegister() {
             if (!currentModalEventId) return;
 
@@ -1386,14 +2653,23 @@
                 const data = await resp.json();
 
                 if (data.success) {
-                    showToast(data.message, 'success');
+                    const scheduleInfo = (data.eventDate && data.eventTime) ? 
+                        ` • Scheduled: ${data.eventDate} at ${data.eventTime} (${data.venue})` : '';
+                    showToast(`${data.message}${scheduleInfo}`, 'success', 5000);
                     registeredEventIds.add(currentModalEventId);
                     currentModalIsRegistered = true;
-                    updateModalButtons(true);
+                    currentModalData.registered = true;
+                    currentModalData.regCount = data.registrationCount;
+                    updateModalButtons(true, false);
                     updateCardRegistrationState(currentModalEventId, true, data.registrationCount);
                     document.getElementById('modal-reg-count-text').textContent = data.registrationCount + ' student' + (data.registrationCount !== 1 ? 's' : '') + ' registered';
-                    closeModal();
-                    // Reload after short delay to show countdown
+                    
+                    // Show ticket pass
+                    const ticketId = `CP-PASS-${currentModalEventId}-${/*[[${user != null ? user.id : 1}]]*/ 1}`;
+                    document.getElementById('ticket-id-display').textContent = `#${ticketId}`;
+                    document.getElementById('modal-qr-code-svg').innerHTML = generateQRCodeSVG(ticketId + ':' + currentModalData.title);
+                    document.getElementById('modal-qr-ticket').style.display = 'block';
+
                     setTimeout(() => window.location.reload(), 1500);
                 } else {
                     showToast(data.message, 'warning');
@@ -1406,7 +2682,7 @@
         function handleUnregister() {
             showConfirm(
                 'Cancel Registration?',
-                'Are you sure you want to unregister from this event? You can always re-register later.',
+                'Are you sure you want to unregister from this event? You can always re-register later if seats remain.',
                 async () => {
                     try {
                         const resp = await fetch(`/events/${currentModalEventId}/unregister`, {
@@ -1419,9 +2695,12 @@
                             showToast('Successfully unregistered from the event.', 'info');
                             registeredEventIds.delete(currentModalEventId);
                             currentModalIsRegistered = false;
-                            updateModalButtons(false);
+                            currentModalData.registered = false;
+                            currentModalData.regCount = data.registrationCount;
+                            updateModalButtons(false, false);
                             updateCardRegistrationState(currentModalEventId, false, data.registrationCount);
                             document.getElementById('modal-reg-count-text').textContent = data.registrationCount + ' student' + (data.registrationCount !== 1 ? 's' : '') + ' registered';
+                            document.getElementById('modal-qr-ticket').style.display = 'none';
                             closeModal();
                             setTimeout(() => window.location.reload(), 1500);
                         } else {
@@ -1450,8 +2729,319 @@
             });
         }
 
+        /* ===== PASSWORD TOGGLE & MATCH HELPERS ===== */
+        function togglePasswordVisibility(inputId, btn) {
+            const input = document.getElementById(inputId);
+            if (!input) return;
+            if (input.type === 'password') {
+                input.type = 'text';
+                btn.textContent = '🙈';
+                btn.title = 'Hide password';
+            } else {
+                input.type = 'password';
+                btn.textContent = '👁️';
+                btn.title = 'Show password';
+            }
+        }
+
+        function checkPasswordMatch() {
+            const newPass = document.getElementById('profile-new-password').value;
+            const confPass = document.getElementById('profile-confirm-password').value;
+            const badge = document.getElementById('password-match-badge');
+            if (!badge) return;
+
+            if (!newPass && !confPass) {
+                badge.className = 'password-match-badge';
+                badge.textContent = '';
+                return;
+            }
+
+            if (confPass.length > 0) {
+                if (newPass === confPass) {
+                    badge.className = 'password-match-badge matched';
+                    badge.textContent = '✓ Passwords match';
+                } else {
+                    badge.className = 'password-match-badge mismatched';
+                    badge.textContent = '✕ Passwords do not match';
+                }
+            } else {
+                badge.className = 'password-match-badge';
+                badge.textContent = '';
+            }
+        }
+
+        function showProfileAlert(msg, isError = true) {
+            const alertBox = document.getElementById('profile-modal-alert');
+            if (!alertBox) return;
+            alertBox.style.display = 'block';
+            if (isError) {
+                alertBox.style.background = '#fef2f2';
+                alertBox.style.border = '1px solid #fecaca';
+                alertBox.style.color = '#dc2626';
+                alertBox.innerHTML = '⚠️ ' + msg;
+            } else {
+                alertBox.style.background = '#ecfdf5';
+                alertBox.style.border = '1px solid #a7f3d0';
+                alertBox.style.color = '#059669';
+                alertBox.innerHTML = '✓ ' + msg;
+            }
+        }
+
+        function hideProfileAlert() {
+            const alertBox = document.getElementById('profile-modal-alert');
+            if (alertBox) {
+                alertBox.style.display = 'none';
+                alertBox.innerHTML = '';
+            }
+        }
+
+        /* ===== STUDENT PROFILE MODAL ===== */
+        function openProfileModal() {
+            hideProfileAlert();
+            document.getElementById('profile-current-password').value = '';
+            document.getElementById('profile-new-password').value = '';
+            document.getElementById('profile-confirm-password').value = '';
+            checkPasswordMatch();
+            document.getElementById('profile-modal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeProfileModal() {
+            hideProfileAlert();
+            document.getElementById('profile-modal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function closeProfileOnOverlay(e) {
+            if (e.target.id === 'profile-modal') closeProfileModal();
+        }
+
+        async function submitProfileForm(e) {
+            e.preventDefault();
+            hideProfileAlert();
+
+            const username = document.getElementById('profile-username').value.trim();
+            const collegeName = document.getElementById('profile-college').value.trim();
+            const phoneNumber = document.getElementById('profile-phone').value.trim();
+            const currentPassword = document.getElementById('profile-current-password').value;
+            const newPassword = document.getElementById('profile-new-password').value;
+            const confirmPassword = document.getElementById('profile-confirm-password').value;
+
+            // Validate 10-digit Indian mobile number
+            if (phoneNumber.includes('+91') || phoneNumber.startsWith('+')) {
+                const msg = 'Please enter only the 10-digit mobile number without +91.';
+                showToast(msg, 'warning');
+                showProfileAlert(msg, true);
+                return;
+            }
+            if (!/^[6-9]\d{9}$/.test(phoneNumber)) {
+                const msg = 'Mobile number must be a 10-digit Indian number starting with 6-9.';
+                showToast(msg, 'warning');
+                showProfileAlert(msg, true);
+                return;
+            }
+
+            // Password change validations
+            const wantsPasswordChange = newPassword.length > 0 || confirmPassword.length > 0;
+            if (wantsPasswordChange) {
+                if (!currentPassword) {
+                    const msg = 'Please enter your current password to authorize changing your password.';
+                    showToast(msg, 'warning');
+                    showProfileAlert(msg, true);
+                    document.getElementById('profile-current-password').focus();
+                    return;
+                }
+                if (newPassword.length < 6) {
+                    const msg = 'New password must be at least 6 characters long.';
+                    showToast(msg, 'warning');
+                    showProfileAlert(msg, true);
+                    document.getElementById('profile-new-password').focus();
+                    return;
+                }
+                if (newPassword !== confirmPassword) {
+                    const msg = 'New password and confirmation password do not match.';
+                    showToast(msg, 'warning');
+                    showProfileAlert(msg, true);
+                    document.getElementById('profile-confirm-password').focus();
+                    return;
+                }
+            }
+
+            const saveBtn = document.getElementById('profile-save-btn');
+            saveBtn.disabled = true;
+            saveBtn.textContent = 'Saving Changes...';
+
+            try {
+                const formData = new URLSearchParams();
+                formData.append('username', username);
+                formData.append('collegeName', collegeName);
+                formData.append('phoneNumber', phoneNumber);
+                if (currentPassword) {
+                    formData.append('currentPassword', currentPassword);
+                }
+                if (newPassword) {
+                    formData.append('newPassword', newPassword);
+                }
+                if (confirmPassword) {
+                    formData.append('confirmPassword', confirmPassword);
+                }
+
+                const resp = await fetch('/profile/update', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: formData.toString()
+                });
+
+                if (resp.status === 401) {
+                    showToast('Session expired. Please log in again.', 'error');
+                    showProfileAlert('Session expired. Redirecting to login...', true);
+                    setTimeout(() => window.location.href = '/login', 1500);
+                    return;
+                }
+
+                const data = await resp.json();
+
+                if (data.success) {
+                    showToast(data.message, 'success');
+                    showProfileAlert(data.message, false);
+
+                    document.getElementById('profile-current-password').value = '';
+                    document.getElementById('profile-new-password').value = '';
+                    document.getElementById('profile-confirm-password').value = '';
+                    checkPasswordMatch();
+                    
+                    const avatarEls = document.querySelectorAll('.user-avatar');
+                    avatarEls.forEach(el => el.textContent = data.username.substring(0, 1).toUpperCase());
+                    const userChipName = document.querySelector('.user-chip .user-name-text') || document.querySelector('.user-chip span');
+                    if (userChipName) userChipName.textContent = data.username;
+                    const ticketName = document.getElementById('ticket-user-name');
+                    if (ticketName) ticketName.textContent = data.username;
+                    const ticketCol = document.getElementById('ticket-college-name');
+                    if (ticketCol) ticketCol.textContent = data.collegeName;
+
+                    setTimeout(() => {
+                        closeProfileModal();
+                    }, 1200);
+                } else {
+                    showToast(data.message, 'error');
+                    showProfileAlert(data.message, true);
+                }
+            } catch (err) {
+                showToast('Failed to update profile. Please try again.', 'error');
+                showProfileAlert('Failed to update profile. Please check your network and try again.', true);
+            } finally {
+                saveBtn.disabled = false;
+                saveBtn.textContent = 'Save Profile Changes';
+            }
+        }
+
+        /* ===== NOTIFICATION CENTER ===== */
+        function toggleNotifications() {
+            const dd = document.getElementById('notification-dropdown');
+            if (dd) dd.classList.toggle('active');
+        }
+
+        function dismissAllNotifications() {
+            const list = document.getElementById('notif-dropdown-list');
+            const badge = document.getElementById('notif-badge');
+            if (list) {
+                list.innerHTML = `
+                    <div class="notif-empty">
+                        <div style="font-size: 24px; margin-bottom: 6px;">✓</div>
+                        <p style="font-weight: 600; font-size: 13px;">All caught up!</p>
+                        <p style="font-size: 11.5px; color: var(--text-muted); margin-top: 2px;">No unread schedule alerts.</p>
+                    </div>
+                `;
+            }
+            if (badge) badge.style.display = 'none';
+        }
+
+        document.addEventListener('click', (e) => {
+            const wrapper = document.getElementById('notification-wrapper');
+            if (wrapper && !wrapper.contains(e.target)) {
+                const dd = document.getElementById('notification-dropdown');
+                if (dd) dd.classList.remove('active');
+            }
+        });
+
         /* ===== LIVE COUNTDOWN TIMERS ===== */
+        function parseTargetDateTime(dtStr, dateStr, timeStr) {
+            // 1. Try ISO dtStr (e.g. "2026-11-15T10:00" or "2026-11-15T10:00:00")
+            if (dtStr && dtStr !== 'null' && dtStr.trim() !== '') {
+                let s = dtStr.trim();
+                if (s.includes('T') && s.split(':').length === 2) {
+                    s += ':00';
+                }
+                const d = new Date(s);
+                if (!isNaN(d.getTime())) return d;
+            }
+
+            // 2. Try dateStr + timeStr (e.g. "Nov 15, 2026" + "10:00 AM - 3:30 PM")
+            if (dateStr && dateStr !== 'null' && dateStr.trim() !== '') {
+                let timePart = '10:00 AM';
+                if (timeStr && timeStr !== 'null' && timeStr.trim() !== '') {
+                    timePart = timeStr.split('-')[0].trim();
+                }
+                const combined = dateStr.trim() + ' ' + timePart;
+                const d = new Date(combined);
+                if (!isNaN(d.getTime())) return d;
+
+                const d2 = new Date(dateStr.trim());
+                if (!isNaN(d2.getTime())) return d2;
+            }
+            return null;
+        }
+
         function updateCountdowns() {
+            // 1. Update Main Next Event Hero Countdown Clock
+            const nextHero = document.getElementById('next-event-hero');
+            if (nextHero) {
+                const dtStr = nextHero.getAttribute('data-next-datetime');
+                const dateStr = nextHero.getAttribute('data-date');
+                const timeStr = nextHero.getAttribute('data-time');
+
+                const eventDate = parseTargetDateTime(dtStr, dateStr, timeStr);
+                const now = new Date();
+
+                const daysEl = document.getElementById('clock-days');
+                const hoursEl = document.getElementById('clock-hours');
+                const minsEl = document.getElementById('clock-mins');
+                const secsEl = document.getElementById('clock-secs');
+                const statusEl = document.getElementById('clock-status-text');
+
+                if (!eventDate) {
+                    if (statusEl) {
+                        statusEl.style.display = 'block';
+                        statusEl.textContent = '⏱ Schedule confirmed';
+                    }
+                } else {
+                    const diff = eventDate.getTime() - now.getTime();
+
+                    if (diff <= 0) {
+                        if (daysEl) daysEl.textContent = '00';
+                        if (hoursEl) hoursEl.textContent = '00';
+                        if (minsEl) minsEl.textContent = '00';
+                        if (secsEl) secsEl.textContent = '00';
+                        if (statusEl) {
+                            statusEl.style.display = 'block';
+                            statusEl.textContent = '🎉 Program is in progress or completed!';
+                        }
+                    } else {
+                        if (statusEl) statusEl.style.display = 'none';
+                        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                        const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                        const secs = Math.floor((diff % (1000 * 60)) / 1000);
+
+                        if (daysEl) daysEl.textContent = String(days).padStart(2, '0');
+                        if (hoursEl) hoursEl.textContent = String(hours).padStart(2, '0');
+                        if (minsEl) minsEl.textContent = String(mins).padStart(2, '0');
+                        if (secsEl) secsEl.textContent = String(secs).padStart(2, '0');
+                    }
+                }
+            }
+
+            // 2. Update individual registered cards
             const timerEls = document.querySelectorAll('[data-countdown]');
             const now = new Date();
 
@@ -1459,18 +3049,22 @@
                 const card = el.closest('.reg-event-card');
                 if (!card) return;
 
-                const dtStr = card.getAttribute('data-event-datetime');
-                if (!dtStr) {
-                    el.textContent = 'Date TBD';
+                const dtStr = card.getAttribute('data-event-datetime') || card.getAttribute('data-datetime');
+                const dateStr = card.getAttribute('data-date');
+                const timeStr = card.getAttribute('data-time');
+
+                const eventDate = parseTargetDateTime(dtStr, dateStr, timeStr);
+                const countdownBox = el.closest('.countdown-box');
+
+                if (!eventDate) {
+                    el.textContent = 'Schedule Confirmed';
                     return;
                 }
 
-                const eventDate = new Date(dtStr);
-                const diff = eventDate - now;
-                const countdownBox = el.closest('.countdown-box');
+                const diff = eventDate.getTime() - now.getTime();
 
                 if (diff <= 0) {
-                    el.textContent = 'Event has started!';
+                    el.textContent = 'Event In Progress';
                     if (countdownBox) countdownBox.classList.add('countdown-passed');
                     return;
                 }

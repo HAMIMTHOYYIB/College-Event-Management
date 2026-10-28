@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notice - Campus Events Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #ffffff;
+            --surface: rgba(255, 255, 255, 0.95);
+            --card-border: rgba(14, 165, 233, 0.18);
+            --primary: #0284c7;
+            --primary-hover: #0369a1;
+            --accent: #38bdf8;
+            --text-primary: #0f172a;
+            --text-secondary: #334155;
+            --text-muted: #64748b;
+            --danger: #ef4444;
+            --danger-bg: rgba(239, 68, 68, 0.08);
+            --shadow-soft: 0 15px 35px -5px rgba(2, 132, 199, 0.1), 0 5px 15px rgba(0, 0, 0, 0.03);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-main);
+            background-image: radial-gradient(at 0% 0%, #f0f9ff 0px, transparent 55%),
+                              radial-gradient(at 100% 100%, #e0f2fe 0px, transparent 45%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            padding: 24px;
+        }
+
+        .error-card {
+            background: var(--surface);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            padding: 42px 36px;
+            width: 100%;
+            max-width: 480px;
+            box-shadow: var(--shadow-soft);
+            text-align: center;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .error-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, rgba(2, 132, 199, 0.15), rgba(56, 189, 248, 0.25));
+            border: 1px solid rgba(14, 165, 233, 0.3);
+            border-radius: 18px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        h1 {
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.4px;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .error-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin-bottom: 24px;
+        }
+
+        .error-details {
+            background: #f8fafc;
+            border: 1px solid rgba(14, 165, 233, 0.18);
+            border-radius: 12px;
+            padding: 12px 16px;
+            margin-bottom: 24px;
+            text-align: left;
+            font-size: 12.5px;
+            color: var(--text-muted);
+            font-family: monospace;
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 11px 22px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: #ffffff;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.2s;
+            box-shadow: 0 4px 14px rgba(2, 132, 199, 0.25);
+        }
+
+        .btn-primary:hover {
+            opacity: 0.95;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 11px 22px;
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            color: var(--text-secondary);
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .btn-secondary:hover {
+            background: #e2e8f0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="error-card">
+        <div class="error-icon">ℹ</div>
+        <h1>Something went wrong</h1>
+        <p class="error-desc">The request could not be processed. Please check the provided information and try again.</p>
+
+        <div class="error-details" th:if="${status}">
+            <div>Status: <span th:text="${status}">400</span></div>
+            <div th:if="${error}">Error: <span th:text="${error}">Bad Request</span></div>
+            <div th:if="${message}">Message: <span th:text="${message}">Details</span></div>
+        </div>
+
+        <div class="actions">
+            <a href="javascript:history.back()" class="btn-secondary">Go Back</a>
+            <a href="/" class="btn-primary">Return to Home</a>
+        </div>
+    </div>
+
+</body>
+</html>
+

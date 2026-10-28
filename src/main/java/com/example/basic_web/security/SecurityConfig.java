@@ -24,7 +24,7 @@ public class SecurityConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(jwtAuthenticationInterceptor)
-                .addPathPatterns("/", "/admin", "/admin/**", "/events/**")
+                .addPathPatterns("/**")
                 .excludePathPatterns(
                         "/login",
                         "/signup",

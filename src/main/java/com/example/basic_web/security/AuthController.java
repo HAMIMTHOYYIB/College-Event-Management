@@ -55,7 +55,7 @@ public class AuthController {
                         "Event Administrator",
                         "eventadmin@gmail.com",
                         encoder.encode("admin123"),
-                        "+1 (800) 555-0199",
+                        "9876543210",
                         "Central Campus Administration",
                         "ADMIN"
                 );
@@ -69,7 +69,7 @@ public class AuthController {
                         "John Doe",
                         "john@example.com",
                         encoder.encode("password123"),
-                        "+1 (555) 019-2834",
+                        "9876543211",
                         "Stanford University",
                         "USER"
                 );
@@ -119,6 +119,7 @@ public class AuthController {
                         "sky"
                 );
                 ev1.setEventDateTime(LocalDateTime.of(2026, 11, 15, 10, 0));
+                ev1.setMaxCapacity(50);
                 eventRepo.save(ev1);
 
                 EventCard ev2 = new EventCard(
@@ -134,6 +135,7 @@ public class AuthController {
                         "blue"
                 );
                 ev2.setEventDateTime(LocalDateTime.of(2026, 11, 18, 14, 0));
+                ev2.setMaxCapacity(35);
                 eventRepo.save(ev2);
 
                 EventCard ev3 = new EventCard(
@@ -149,6 +151,7 @@ public class AuthController {
                         "cyan"
                 );
                 ev3.setEventDateTime(LocalDateTime.of(2026, 11, 22, 11, 0));
+                ev3.setMaxCapacity(40);
                 eventRepo.save(ev3);
 
                 EventCard ev4 = new EventCard(
@@ -164,6 +167,7 @@ public class AuthController {
                         "sky"
                 );
                 ev4.setEventDateTime(LocalDateTime.of(2026, 11, 28, 17, 0));
+                ev4.setMaxCapacity(200);
                 eventRepo.save(ev4);
 
                 EventCard ev5 = new EventCard(
@@ -179,6 +183,7 @@ public class AuthController {
                         "blue"
                 );
                 ev5.setEventDateTime(LocalDateTime.of(2026, 12, 2, 13, 30));
+                ev5.setMaxCapacity(75);
                 eventRepo.save(ev5);
 
                 EventCard ev6 = new EventCard(
@@ -194,7 +199,25 @@ public class AuthController {
                         "cyan"
                 );
                 ev6.setEventDateTime(LocalDateTime.of(2026, 12, 6, 9, 0));
+                ev6.setMaxCapacity(100);
                 eventRepo.save(ev6);
+            }
+
+            // Data Migration: Ensure every event in database has non-null eventDateTime & maxCapacity
+            for (EventCard ev : eventRepo.findAll()) {
+                boolean changed = false;
+                if (ev.getEventDateTime() == null) {
+                    LocalDateTime dt = EventCard.parseDateTimeFromStrings(ev.getEventDate(), ev.getEventTime());
+                    ev.setEventDateTime(dt);
+                    changed = true;
+                }
+                if (ev.getMaxCapacity() == null || ev.getMaxCapacity() <= 0) {
+                    ev.setMaxCapacity(50);
+                    changed = true;
+                }
+                if (changed) {
+                    eventRepo.save(ev);
+                }
             }
         };
     }
@@ -316,12 +339,23 @@ public class AuthController {
             return "views/signup";
         }
 
+        // Indian mobile number validation: exactly 10 digits starting with 6, 7, 8, or 9 (no +91)
+        String trimmedPhone = phoneNumber.trim();
+        if (trimmedPhone.contains("+91") || trimmedPhone.startsWith("+")) {
+            model.addAttribute("error", "Please enter only the 10-digit Indian phone number without +91.");
+            return "views/signup";
+        }
+        if (!trimmedPhone.matches("^[6-9]\\d{9}$")) {
+            model.addAttribute("error", "Phone number must be a valid 10-digit Indian mobile number (e.g. 9876543210).");
+            return "views/signup";
+        }
+
         // Create student account with role USER
         User newUser = new User(
                 username.trim(),
                 normalizedEmail,
                 passwordEncoder.encode(password),
-                phoneNumber.trim(),
+                trimmedPhone,
                 collegeName.trim(),
                 "USER"
         );

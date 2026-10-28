@@ -56,6 +56,16 @@ public class JwtAuthenticationInterceptor implements HandlerInterceptor {
         clearCookie.setMaxAge(0);
         response.addCookie(clearCookie);
 
+        String acceptHeader = request.getHeader("Accept");
+        String uri = request.getRequestURI();
+        if ((acceptHeader != null && acceptHeader.contains("application/json"))
+                || (uri != null && (uri.startsWith("/profile/") || uri.startsWith("/events/")))) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType("application/json;charset=UTF-8");
+            response.getWriter().write("{\"success\":false,\"message\":\"Your session has expired. Please log in again.\"}");
+            return false;
+        }
+
         // Redirect unauthenticated user to login
         response.sendRedirect("/login");
         return false;
